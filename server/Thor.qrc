@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>src/qml/main.qml</file>
+        <file>src/qml/ControlBoard.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>source/connect.png</file>
+        <file>source/access.png</file>
+        <file>source/radio.png</file>
+        <file>source/disconnect.png</file>
+        <file>source/settings.png</file>
+        <file>src/qml/Settings.qml</file>
+    </qresource>
+</RCC>

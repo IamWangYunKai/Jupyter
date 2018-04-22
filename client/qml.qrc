@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/qml/main.qml</file>
-        <file>logo.ico</file>
+        <file>main.qml</file>
     </qresource>
 </RCC>
