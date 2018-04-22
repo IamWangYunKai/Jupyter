@@ -14,7 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     interaction.cpp \
-    communicator.cpp
+    communicator.cpp \
+    proto/zss_cmd.pb.cc
 
 RESOURCES += qml.qrc
 
@@ -29,14 +30,58 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+
+macx {
+#    SPDLOG_INCLUDE = C:\usr\local\spdlog\include
+    SPDLOG_INCLUDE = $$PWD/libs
+    PROTOBUF_INCLUDE = /usr/local/include
+    CONFIG(release,debug|release){
+        PROTOBUF_LIB = /usr/local/lib/libprotobuf.13.dylib
+    }
+    CONFIG(debug,debug|release){
+        PROTOBUF_LIB = /usr/local/lib/libprotobuf.13.dylib
+    }
+}
+win32 {
+    SPDLOG_INCLUDE = $$PWD/libs
+    PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
+    CONFIG(release,debug|release){
+        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobuf.lib
+    }
+    CONFIG(debug,debug|release){
+        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
+    }
+}
+android {
+    SPDLOG_INCLUDE = $$PWD/libs
+    PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
+    CONFIG(release,debug|release){
+        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobuf.lib
+    }
+    CONFIG(debug,debug|release){
+        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
+    }
+}
+unix:!macx{
+    SPDLOG_INCLUDE = $$PWD/libs
+}
+
+INCLUDEPATH += \
+    $$SPDLOG_INCLUDE \
+    $$PROTOBUF_INCLUDE
+
+
 HEADERS += \
     interaction.h \
     communicator.h \
     staticparam.h \
-    singleton.hpp
+    singleton.hpp \
+    zsingleton.h \
+    proto/zss_cmd.pb.h
 
 DISTFILES += \
     android-sources/AndroidManifest.xml \
-    icon.png
+    icon.png \
+    proto/zss_cmd.proto
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources

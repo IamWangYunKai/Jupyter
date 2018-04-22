@@ -15,6 +15,7 @@ public:
     bool disconnect();
     // test TODO;
     bool testSend(const QString&);
+    void sendCommand(QByteArray datagram);
 private slots:
     void testReceive();
 private:

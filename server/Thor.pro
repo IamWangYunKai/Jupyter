@@ -72,14 +72,14 @@ HEADERS += \
     src/actionmodule.h \
     src/proto/zss_cmd.pb.h \
     src/crc.h \
-    src/zsingleton.h \
     src/interaction.h \
     src/translator.hpp \
     src/test.h \
     src/paraminterface.h \
     src/communicator.h \
     src/interaction.h \
-    src/staticparam.h
+    src/staticparam.h \
+    src/zsingleton.h
 
 INCLUDEPATH += \
     src/

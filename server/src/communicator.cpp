@@ -1,6 +1,12 @@
 #include "communicator.h"
 #include "staticparam.h"
 #include <QNetworkInterface>
+
+#include "proto/zss_cmd.pb.h"
+#include "zsingleton.h"
+#include <QTest>
+//#include <QElapsedTimer>
+
 Communicator::Communicator(QObject *parent) : QObject(parent){
     QObject::connect(&receiveSocket,SIGNAL(readyRead()),this,SLOT(testReceive()),Qt::DirectConnection);
 }
@@ -46,5 +52,25 @@ void Communicator::testReceive(){
         datagram.resize(receiveSocket.pendingDatagramSize());
         receiveSocket.readDatagram(datagram.data(), datagram.size());
         qDebug() << "receive data : " << datagram;
+        sendCommand(datagram);
+    }
+}
+
+void Communicator::sendCommand(QByteArray datagram){
+    char *data = datagram.data();
+    if (datagram.size() == 20 && data[0] == '#' && data[19] == '#'){
+        qDebug() << "Send Command Now !!!";
+        qDebug() << "";
+        //QElapsedTimer timer;
+        //timer.start();
+
+        ZSS::Protocol::Robots_Command commands;
+        auto command = commands.add_command();
+        command->set_robot_id(1);
+        command->set_velocity_x(0.2);
+        ZSS::ZActionModule::instance()->sendLegacy(commands);
+        QTest::qWait(16);
+        //command->set_velocity_x(0);
+        ZSS::ZActionModule::instance()->sendLegacy(commands);
     }
 }
