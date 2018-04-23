@@ -65,11 +65,17 @@ Window {
         id:r1;
         anchors.left: parent.left;
         anchors.bottom: parent.bottom;
+        onValueChanged:{
+            interaction.pos(x, y)
+        }
     }
     MouseRectangle{
         id:r2;
         anchors.right: parent.right;
         anchors.bottom: parent.bottom;
+        onValueChanged:{
+            interaction.dir(x, y)
+        }
     }
 
 }

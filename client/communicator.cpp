@@ -1,10 +1,15 @@
 #include "communicator.h"
 #include "staticparam.h"
 #include <QNetworkInterface>
+#include <QtMath>
+#include <QTimer>
 #include "proto/zss_cmd.pb.h"
 
 Communicator::Communicator(QObject *parent) : QObject(parent){
     QObject::connect(&receiveSocket,SIGNAL(readyRead()),this,SLOT(testReceive()),Qt::DirectConnection);
+    QTimer *timer = new QTimer(this);
+    QTimer::connect(timer, SIGNAL(timeout()), this, SLOT(sendCommand()));
+    timer->start(16);
 }
 bool Communicator::connect(){
     if (
@@ -57,9 +62,35 @@ QByteArray Communicator::sendCommand(){
     ZSS::Protocol::Robots_Command commands;
     auto command = commands.add_command();
     command->set_robot_id(1);
-    command->set_velocity_x(0.2);
+    command->set_velocity_x(vx);
+    command->set_velocity_x(vy);
+    command->set_velocity_r(vr);
+    //qDebug() <<"vx:" << vx <<" vy:"<<vy<<" vr:"<<vr;
     int size = commands.ByteSize();
     QByteArray buffer(size,0);
     commands.SerializeToArray(buffer.data(), size);
     return buffer;
+}
+
+void Communicator::pos(int x, int y){
+    last_vx = vx;
+    last_vy = vy;
+    vx = x / 20.0;
+    vy = y / 20.0;
+    if (vx*vx + vy*vy > ZSS::Vehicle::MAX_SPEED*ZSS::Vehicle::MAX_SPEED){
+        float theta = qAtan2(-y, x);
+        vx = ZSS::Vehicle::MAX_SPEED*cos(theta);
+        vy =ZSS::Vehicle::MAX_SPEED*sin(theta);
+    }
+    //qDebug() << "Vel:" << vx<<", " << vy;
+}
+
+void Communicator::dir(int x, int y){
+    last_vr = vr;
+    vr = 3.14159265358979323846 - abs(qAtan2(x, y));
+    const float theta_max = 2.5;
+    if (vr > theta_max) vr = theta_max;
+    if (x < 0) vr = - vr;
+    vr =  ZSS::Vehicle::MAX_ROTATION_SPEED * vr / theta_max;
+    qDebug() << "Dir:" << vr;
 }

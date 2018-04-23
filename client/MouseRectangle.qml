@@ -7,6 +7,7 @@ Rectangle{
     y:0;
     radius: height/2;
     color:"#808080"
+    signal valueChanged(int x, int y)
     MultiPointTouchArea {
         anchors.fill: parent
         minimumTouchPoints: 1
@@ -14,6 +15,9 @@ Rectangle{
         touchPoints: [
             TouchPoint { id: touch }
         ]
+        onUpdated: {
+            valueChanged(touch.x - parent.width/2, touch.y - parent.height/2)
+        }
     }
     Rectangle{
         id:rocker

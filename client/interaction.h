@@ -23,6 +23,12 @@ public:
     Q_INVOKABLE void changeNetworkInterface(int index){
         ZCommunicator::instance()->changeNetworkInterface(index);
     }
+    Q_INVOKABLE void pos(int x, int y){
+        ZCommunicator::instance()->pos(x, y);
+    }
+    Q_INVOKABLE void dir(int x, int y){
+        ZCommunicator::instance()->dir(x, y);
+    }
     ~Interaction();
 public:
 signals:
