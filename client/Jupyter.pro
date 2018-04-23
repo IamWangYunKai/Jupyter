@@ -7,17 +7,12 @@ CONFIG += c++11
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
+RESOURCES += qml.qrc
+
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
-SOURCES += main.cpp \
-    interaction.cpp \
-    communicator.cpp \
-    proto/zss_cmd.pb.cc
-
-RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -30,18 +25,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-
-macx {
-#    SPDLOG_INCLUDE = C:\usr\local\spdlog\include
-    SPDLOG_INCLUDE = $$PWD/libs
-    PROTOBUF_INCLUDE = /usr/local/include
-    CONFIG(release,debug|release){
-        PROTOBUF_LIB = /usr/local/lib/libprotobuf.13.dylib
-    }
-    CONFIG(debug,debug|release){
-        PROTOBUF_LIB = /usr/local/lib/libprotobuf.13.dylib
-    }
-}
 win32 {
     SPDLOG_INCLUDE = $$PWD/libs
     PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
@@ -51,19 +34,6 @@ win32 {
     CONFIG(debug,debug|release){
         PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
     }
-}
-android {
-    SPDLOG_INCLUDE = $$PWD/libs
-    PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
-    CONFIG(release,debug|release){
-        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobuf.lib
-    }
-    CONFIG(debug,debug|release){
-        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
-    }
-}
-unix:!macx{
-    SPDLOG_INCLUDE = $$PWD/libs
 }
 
 INCLUDEPATH += \
@@ -79,9 +49,16 @@ HEADERS += \
     zsingleton.h \
     proto/zss_cmd.pb.h
 
+SOURCES += main.cpp \
+    interaction.cpp \
+    communicator.cpp \
+    proto/zss_cmd.pb.cc
+
 DISTFILES += \
     android-sources/AndroidManifest.xml \
     icon.png \
-    proto/zss_cmd.proto
+
+LIBS += \
+    $$PROTOBUF_LIB
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources

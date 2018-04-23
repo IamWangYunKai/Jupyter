@@ -37,9 +37,10 @@ void Communicator::changeNetworkInterface(int index){
 }
 // test TODO;
 bool Communicator::testSend(const QString& message){
-    qDebug() << "try to send : " << message;
+    //qDebug() << "try to send : " << message;
     //QByteArray data = message.toLatin1();
     QByteArray data = sendCommand();
+    //qDebug() << "try to send : " << data.toHex();
     sendSocket.writeDatagram(data,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
     return true;
 }

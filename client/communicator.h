@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QUdpSocket>
 #include <singleton.hpp>
+
 class Communicator : public QObject
 {
     Q_OBJECT
