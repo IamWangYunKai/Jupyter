@@ -46,7 +46,6 @@ HEADERS += \
     communicator.h \
     staticparam.h \
     singleton.hpp \
-    zsingleton.h \
     proto/zss_cmd.pb.h
 
 SOURCES += main.cpp \

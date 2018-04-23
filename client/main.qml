@@ -6,8 +6,8 @@ import ZSS 1.0 as ZSS
 Window {
     id:control
     visible: true
-    width: 400
-    height: 480
+    width: 500
+    height: 500
     title: qsTr("Jupyter")
     property bool socketConnect : false;
     ZSS.Interaction{
@@ -59,6 +59,16 @@ Window {
                 }
             }
         }
+    }
+    MouseRectangle{
+        id:r1;
+        anchors.left: parent.left;
+        anchors.bottom: parent.bottom;
+    }
+    MouseRectangle{
+        id:r2;
+        anchors.right: parent.right;
+        anchors.bottom: parent.bottom;
     }
 
 }
