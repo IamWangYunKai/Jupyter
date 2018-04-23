@@ -1,6 +1,4 @@
-* [ ] test framework
-* [x] param system (sqlite)
-    * [ ] visualization
-* [ ] log system (spdlog)
-    * [ ] shared log for the whole system (rotating log)
-    * [ ] simple log for single module (async)
+* [ ] 给车发包一次后速度置零
+* [ ] 旋转方向改成正弦形式
+* [ ] 松手后圆圈置零
+* [ ] 圆形约束

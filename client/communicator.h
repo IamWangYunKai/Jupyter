@@ -20,7 +20,7 @@ public:
     void dir(int, int);
 private slots:
     void testReceive();
-    QByteArray sendCommand();
+    void sendCommand();
 private:
     QUdpSocket sendSocket,receiveSocket;
     QStringList networkInterfaceNames;

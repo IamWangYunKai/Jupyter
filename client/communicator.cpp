@@ -58,7 +58,7 @@ void Communicator::testReceive(){
     }
 }
 
-QByteArray Communicator::sendCommand(){
+void Communicator::sendCommand(){
     ZSS::Protocol::Robots_Command commands;
     auto command = commands.add_command();
     command->set_robot_id(1);
@@ -69,7 +69,7 @@ QByteArray Communicator::sendCommand(){
     int size = commands.ByteSize();
     QByteArray buffer(size,0);
     commands.SerializeToArray(buffer.data(), size);
-    return buffer;
+    sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
 }
 
 void Communicator::pos(int x, int y){
