@@ -6,7 +6,7 @@ Rectangle{
     x:0;
     y:0;
     radius: height/2;
-    color:"grey";
+    color:"#808080"
     MultiPointTouchArea {
         anchors.fill: parent
         minimumTouchPoints: 1
