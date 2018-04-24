@@ -18,6 +18,8 @@ public:
     bool testSend(const QString&);
     void pos(int, int);
     void dir(int, int);
+    void plan_pos();
+    void plan_dir();
 private slots:
     void testReceive();
     void sendCommand();
@@ -26,12 +28,12 @@ private:
     QStringList networkInterfaceNames;
     QStringList networkInterfaceReadableNames;
     int networkInterfaceIndex;
-    float vx = 0;
-    float last_vx = 0;
-    float vy = 0;
-    float last_vy = 0;
-    float vr = 0;
-    float last_vr = 0;
+    float vx = 0;//实际值
+    float _vx = 0;//理论值
+    float vy = 0;//实际值
+    float _vy = 0;//理论值
+    float vr = 0;//实际值
+    float _vr = 0;//理论值
 };
 typedef Singleton<Communicator> ZCommunicator;
 #endif // COMMUNICATOR_H
