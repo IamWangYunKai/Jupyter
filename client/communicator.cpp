@@ -42,9 +42,8 @@ void Communicator::changeNetworkInterface(int index){
 }
 // test TODO;
 bool Communicator::testSend(const QString& message){
-    //qDebug() << "try to send : " << message;
-    //QByteArray data = message.toLatin1();
-    QByteArray data = sendCommand();
+    qDebug() << "try to send : " << message;
+    QByteArray data = message.toLatin1();
     //qDebug() << "try to send : " << data.toHex();
     sendSocket.writeDatagram(data,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
     return true;
@@ -70,6 +69,14 @@ void Communicator::sendCommand(){
     QByteArray buffer(size,0);
     commands.SerializeToArray(buffer.data(), size);
     sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
+    /*
+    QTest::qWait(16);
+    command->set_velocity_x(0);
+    command->set_velocity_x(0);
+    command->set_velocity_r(0);
+    commands.SerializeToArray(buffer.data(), size);
+    sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
+    */
 }
 
 void Communicator::pos(int x, int y){
