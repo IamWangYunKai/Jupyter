@@ -8,9 +8,9 @@ namespace Jupyter {
 }
 namespace Vehicle{
     const float MAX_SPEED = 3.0;// (m/s)
-    const float MAX_ROTATION_SPEED = 3.0;// (rad/s)
-    const float MAX_ACC = 1.0;// m/s^2
-    const float MAX_ROTATION_ACC = 2.0;//rad/s^2
+    const float MAX_ROTATION_SPEED = 10.0;// (rad/s)
+    const float MAX_ACC = 2.0;// m/s^2
+    const float MAX_ROTATION_ACC = 10.0;//rad/s^2
 }
 }
 #endif // STATICPARAM_H

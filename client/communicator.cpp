@@ -42,7 +42,7 @@ void Communicator::changeNetworkInterface(int index){
 }
 // test TODO;
 bool Communicator::testSend(const QString& message){
-    qDebug() << "try to send : " << message;
+    //qDebug() << "try to send : " << message;
     QByteArray data = message.toLatin1();
     //qDebug() << "try to send : " << data.toHex();
     sendSocket.writeDatagram(data,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
@@ -53,14 +53,14 @@ void Communicator::testReceive(){
     while (receiveSocket.state() == QUdpSocket::BoundState && receiveSocket.hasPendingDatagrams()) {
         datagram.resize(receiveSocket.pendingDatagramSize());
         receiveSocket.readDatagram(datagram.data(), datagram.size());
-        qDebug() << "receive data : " << datagram;
+        //qDebug() << "receive data : " << datagram;
     }
 }
 
 void Communicator::sendCommand(){
     plan_pos();
     plan_dir();
-    //qDebug()<< "vx: "<<vx <<" vy: "<<vy << " vr:"<<vr;
+    qDebug()<< "vx: "<<vx <<" vy: "<<vy << " vr:"<<vr;
     ZSS::Protocol::Robots_Command commands;
     auto command = commands.add_command();
     command->set_robot_id(1);
@@ -71,6 +71,7 @@ void Communicator::sendCommand(){
     QByteArray buffer(size,0);
     commands.SerializeToArray(buffer.data(), size);
     sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
+    qDebug()<<buffer;
 }
 
 void Communicator::pos(int x, int y){
@@ -102,11 +103,18 @@ void Communicator::plan_pos(){
         vx = vx + ZSS::Vehicle::MAX_ACC * (dvx/acc) / 60.0;
         vy = vy + ZSS::Vehicle::MAX_ACC * (dvy/acc) / 60.0;
     }
+    else{
+        vx = _vx;
+        vy = _vy;
+    }
 }
 
 void Communicator::plan_dir(){
     float dvr = _vr - vr;
     if (60.0 * abs(dvr) > ZSS::Vehicle::MAX_ROTATION_ACC){
         vr = vr + ZSS::Vehicle::MAX_ROTATION_ACC * (dvr/abs(dvr)) / 60.0;
+    }
+    else{
+        vr = _vr;
     }
 }
