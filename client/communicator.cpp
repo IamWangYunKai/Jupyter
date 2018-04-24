@@ -89,15 +89,14 @@ void Communicator::pos(int x, int y){
         vx = ZSS::Vehicle::MAX_SPEED*cos(theta);
         vy =ZSS::Vehicle::MAX_SPEED*sin(theta);
     }
-    //qDebug() << "Vel:" << vx<<", " << vy;
+    qDebug() << "Vel:" << vx<<", " << vy;
 }
 
 void Communicator::dir(int x, int y){
     last_vr = vr;
-    vr = 3.14159265358979323846 - abs(qAtan2(x, y));
-    const float theta_max = 2.5;
-    if (vr > theta_max) vr = theta_max;
+    vr = M_PI - abs(qAtan2(x, y));
     if (x < 0) vr = - vr;
-    vr =  ZSS::Vehicle::MAX_ROTATION_SPEED * vr / theta_max;
+    vr = ZSS::Vehicle::MAX_ROTATION_SPEED * sin(vr);
+    if (abs(vr) < 0.01) vr = 0;
     qDebug() << "Dir:" << vr;
 }
