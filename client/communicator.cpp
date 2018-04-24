@@ -61,35 +61,30 @@ void Communicator::sendCommand(){
     ZSS::Protocol::Robots_Command commands;
     auto command = commands.add_command();
     command->set_robot_id(1);
-    command->set_velocity_x(vx);
     command->set_velocity_x(vy);
+    command->set_velocity_y(vx);//??????????
     command->set_velocity_r(vr);
     //qDebug() <<"vx:" << vx <<" vy:"<<vy<<" vr:"<<vr;
     int size = commands.ByteSize();
     QByteArray buffer(size,0);
     commands.SerializeToArray(buffer.data(), size);
     sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
-    /*
-    QTest::qWait(16);
-    command->set_velocity_x(0);
-    command->set_velocity_x(0);
-    command->set_velocity_r(0);
-    commands.SerializeToArray(buffer.data(), size);
-    sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
-    */
 }
 
 void Communicator::pos(int x, int y){
+    y = -y;
     last_vx = vx;
     last_vy = vy;
-    vx = x / 20.0;
-    vy = y / 20.0;
+    vx = ZSS::Vehicle::MAX_SPEED * x / 100.0;
+    vy = ZSS::Vehicle::MAX_SPEED * y / 100.0;
     if (vx*vx + vy*vy > ZSS::Vehicle::MAX_SPEED*ZSS::Vehicle::MAX_SPEED){
         float theta = qAtan2(-y, x);
+        //qDebug() << "theta: "<<theta;
         vx = ZSS::Vehicle::MAX_SPEED*cos(theta);
-        vy =ZSS::Vehicle::MAX_SPEED*sin(theta);
+        vy =- ZSS::Vehicle::MAX_SPEED*sin(theta);
     }
     qDebug() << "Vel:" << vx<<", " << vy;
+    qDebug() <<"x: " <<x << "y: "<< y;
 }
 
 void Communicator::dir(int x, int y){

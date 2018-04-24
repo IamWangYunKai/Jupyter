@@ -22,7 +22,9 @@ Rectangle{
         onUpdated: {
             valueChanged(touch.x - parent.width/2, touch.y - parent.height/2)
         }
-
+        onPressed: {
+            valueChanged(touch.x - parent.width/2, touch.y - parent.height/2)
+        }
         states: State {
             name: "reset"; when: touch.pressed
             PropertyChanges {
@@ -45,8 +47,8 @@ Rectangle{
         y:parent.height/2 - height/2;
         color:"red";
         opacity:0.6;
-        property int _x:touch.x - parent.width/2 + width/2;
-        property int _y:touch.y - parent.height/2 + height/2;
+        property int _x:touch.x - parent.width/2;
+        property int _y:touch.y - parent.height/2;
         property real _r: Math.min(Math.sqrt(_x*_x + _y*_y), parent.width/2);
         property real theta: Math.atan2(_y,_x);
     }

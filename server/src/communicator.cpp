@@ -60,9 +60,5 @@ void Communicator::sendCommand(QByteArray datagram){
     ZSS::Protocol::Robots_Command commands;
     commands.ParseFromArray(datagram, datagram.size());
     qDebug() << "Send Command Now !!!";
-    //ZSS::Protocol::Robots_Command commands;
-    //auto command = commands.add_command();
-    //command->set_robot_id(1);
-    //command->set_velocity_x(0.2);
     ZSS::ZActionModule::instance()->sendLegacy(commands);
 }
