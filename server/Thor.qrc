@@ -9,5 +9,8 @@
         <file>source/disconnect.png</file>
         <file>source/settings.png</file>
         <file>src/qml/Settings.qml</file>
+        <file>source/joy.png</file>
+        <file>source/joy2.png</file>
+        <file>source/joy3.png</file>
     </qresource>
 </RCC>

@@ -15,15 +15,19 @@ Page{
     header:TabBar {
         id: bar
         width:parent.width;
-        contentHeight:80;
+        contentHeight:50;
         height:contentHeight;
         position: TabBar.Header;
         TabButton {
             icon.source:"/source/radio.png";
         }
         TabButton {
+            icon.source:"/source/joy3.png";
+        }
+        TabButton {
             icon.source:"/source/settings.png";
         }
+
     }
     Timer{
         id:oneSecond;
@@ -100,58 +104,59 @@ Page{
                     test.testAM();
                 }
             }
+        }
+
         /*****************************************/
         /*                  UDP                 */
        /*****************************************/
-            Grid {
-                id: settings;
-                width: parent.width;
-                padding:10;
-                verticalItemAlignment: Grid.AlignVCenter;
-                horizontalItemAlignment: Grid.AlignHCenter;
-                spacing: 5;
-                columns:1;
-                property int itemWidth : width - 2*padding;
-                ComboBox{
-                    id:networkInterfacesComboBox;
-                    enabled: !control.socketConnect;
-                    model:interaction.getNetworkInterfaces();
-                    onActivated: interaction.changeNetworkInterface(currentIndex);
-                    width:parent.itemWidth;
-                    function updateModel(){
-                        model = interaction.getNetworkInterfaces();
-                        if(currentIndex >= 0)
-                            interaction.changeNetworkInterface(currentIndex);
-                    }
-                    Component.onCompleted: updateModel();
+        Grid {
+            id: settings;
+            width: parent.itemWidth;
+            padding:10;
+            verticalItemAlignment: Grid.AlignVCenter;
+            horizontalItemAlignment: Grid.AlignHCenter;
+            spacing: 5;
+            columns:1;
+            property int itemWidth : width - 2*padding;
+            ComboBox{
+                id:networkInterfacesComboBox;
+                enabled: !control.socketConnect;
+                model:interaction.getNetworkInterfaces();
+                onActivated: interaction.changeNetworkInterface(currentIndex);
+                width:parent.itemWidth;
+                function updateModel(){
+                    model = interaction.getNetworkInterfaces();
+                    if(currentIndex >= 0)
+                        interaction.changeNetworkInterface(currentIndex);
                 }
-                Button{
-                    width:parent.itemWidth;
-                    text:control.socketConnect ? "Disconnect" : "Connect";
-                    onClicked: {
+                Component.onCompleted: updateModel();
+            }
+            Button{
+                width:parent.itemWidth;
+                text:control.socketConnect ? "Disconnect" : "Connect";
+                onClicked: {
+                    control.socketConnect = !control.socketConnect;
+                    if(!interaction.changeConnection(control.socketConnect)){
                         control.socketConnect = !control.socketConnect;
-                        if(!interaction.changeConnection(control.socketConnect)){
-                            control.socketConnect = !control.socketConnect;
-                        }
-                    }
-                }
-                RowLayout {
-                    id: textRowLayout
-                    TextField {
-                        id: sendText
-                        Layout.fillWidth: true
-                        focus: true
-                    }
-                    Button {
-                        text: 'Send'
-                        onClicked: {
-                            interaction.send(sendText.text);
-                        }
                     }
                 }
             }
-        /*****************************************/
+            RowLayout {
+                id: textRowLayout
+                TextField {
+                    id: sendText
+                    Layout.fillWidth: true
+                    focus: true
+                }
+                Button {
+                    text: 'Send'
+                    onClicked: {
+                        interaction.send(sendText.text);
+                    }
+                }
+            }
         }
+        /*****************************************/
         Settings{
             anchors.fill: parent;
         }
