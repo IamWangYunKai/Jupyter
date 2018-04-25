@@ -63,7 +63,7 @@ void Communicator::sendCommand(){
     qDebug()<< "vx: "<<vx <<" vy: "<<vy << " vr:"<<vr;
     ZSS::Protocol::Robots_Command commands;
     auto command = commands.add_command();
-    command->set_robot_id(1);
+    command->set_robot_id(0);
     command->set_velocity_x(vy);
     command->set_velocity_y(vx);//坐标问题
     command->set_velocity_r(vr);
