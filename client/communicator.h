@@ -34,6 +34,7 @@ private:
     float _vy = 0;//理论值
     float vr = 0;//实际值
     float _vr = 0;//理论值
+    bool isConnect = false;
 };
 typedef Singleton<Communicator> ZCommunicator;
 #endif // COMMUNICATOR_H

@@ -36,6 +36,17 @@ win32 {
     }
 }
 
+android {
+    SPDLOG_INCLUDE = $$PWD/libs
+    PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
+    CONFIG(release,debug|release){
+        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobuf.lib
+    }
+    CONFIG(debug,debug|release){
+        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
+    }
+}
+
 INCLUDEPATH += \
     $$SPDLOG_INCLUDE \
     $$PROTOBUF_INCLUDE
@@ -45,13 +56,11 @@ HEADERS += \
     interaction.h \
     communicator.h \
     staticparam.h \
-    singleton.hpp \
-    proto/zss_cmd.pb.h
+    singleton.hpp
 
 SOURCES += main.cpp \
     interaction.cpp \
-    communicator.cpp \
-    proto/zss_cmd.pb.cc
+    communicator.cpp
 
 DISTFILES += \
     android-sources/AndroidManifest.xml \
