@@ -23,6 +23,9 @@ public:
     Q_INVOKABLE void changeNetworkInterface(int index){
         ZCommunicator::instance()->changeNetworkInterface(index);
     }
+    Q_INVOKABLE void changeRobotID(int index){
+        ZCommunicator::instance()->changeRobotID(index);
+    }
     Q_INVOKABLE void pos(int x, int y){
         ZCommunicator::instance()->pos(x, y);
     }

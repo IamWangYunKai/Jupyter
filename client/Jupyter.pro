@@ -25,6 +25,16 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+unix:android{
+    SPDLOG_INCLUDE = $$PWD/libs
+    PROTOBUF_INCLUDE += C:\usr\local\protobuf\3.3.0\include
+    CONFIG(release,debug|release){
+        PROTOBUF_LIB += C:\usr\local\protobuf\3.3.0\lib\android\libprotobuf.a
+        PROTOBUF_LIB += C:\usr\local\protobuf\3.3.0\lib\android\libprotobuf-lite.a
+        PROTOBUF_LIB += C:\usr\local\protobuf\3.3.0\lib\android\libprotoc.a
+    }
+}
+
 win32 {
     SPDLOG_INCLUDE = $$PWD/libs
     PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
@@ -35,32 +45,23 @@ win32 {
         PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
     }
 }
-
-android {
-    SPDLOG_INCLUDE = $$PWD/libs
-    PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
-    CONFIG(release,debug|release){
-        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobuf.lib
-    }
-    CONFIG(debug,debug|release){
-        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
-    }
-}
-
 INCLUDEPATH += \
     $$SPDLOG_INCLUDE \
     $$PROTOBUF_INCLUDE
 
 
 HEADERS += \
-    interaction.h \
-    communicator.h \
-    staticparam.h \
-    singleton.hpp
+    $$PWD/src/interaction.h \
+    $$PWD/src/communicator.h \
+    $$PWD/src/staticparam.h \
+    $$PWD/src/singleton.hpp \
+    $$PWD/src/proto/zss_cmd.pb.h
 
-SOURCES += main.cpp \
-    interaction.cpp \
-    communicator.cpp
+SOURCES += \
+    $$PWD/src/main.cpp \
+    $$PWD/src/interaction.cpp \
+    $$PWD/src/communicator.cpp \
+    $$PWD/src/proto/zss_cmd.pb.cc
 
 DISTFILES += \
     android-sources/AndroidManifest.xml \

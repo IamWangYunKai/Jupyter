@@ -46,6 +46,19 @@ Window {
                 }
             }
         }
+        ComboBox{
+            id:robotID;
+            model: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
+            onActivated: interaction.changeRobotID(currentIndex);
+            width:parent.itemWidth;
+            function updateModel(){
+                // = interaction.getNetworkInterfaces();
+                if(currentIndex >= 0)
+                    interaction.changeRobotID(currentIndex);
+            }
+            Component.onCompleted: updateModel();
+
+        }
         RowLayout {
             id: textRowLayout
             TextField {

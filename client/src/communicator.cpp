@@ -3,10 +3,7 @@
 #include <QNetworkInterface>
 #include <QtMath>
 #include <QTimer>
-//#include "proto/zss_cmd.pb.h"
-
-#include<QJsonObject>
-#include<QJsonDocument>
+#include "proto/zss_cmd.pb.h"
 
 Communicator::Communicator(QObject *parent) : QObject(parent){
     QObject::connect(&receiveSocket,SIGNAL(readyRead()),this,SLOT(testReceive()),Qt::DirectConnection);
@@ -19,6 +16,7 @@ bool Communicator::connect(){
             receiveSocket.bind(QHostAddress::AnyIPv4,ZSS::Jupyter::UDP_RECEIVE_PORT, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint) &&
             receiveSocket.joinMulticastGroup(QHostAddress(ZSS::Jupyter::UDP_ADDRESS),QNetworkInterface::interfaceFromName(networkInterfaceNames[networkInterfaceIndex]))
             ){
+        sendSocket.setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
         isConnect = true;
         return true;
     }
@@ -41,8 +39,13 @@ QStringList& Communicator::updateNetworkInterfaces(){
     }
     return networkInterfaceReadableNames;
 }
+
 void Communicator::changeNetworkInterface(int index){
     networkInterfaceIndex = index;
+}
+
+void Communicator::changeRobotID(int index){
+    robotID = index;
 }
 // test TODO;
 bool Communicator::testSend(const QString& message){
@@ -65,29 +68,18 @@ void Communicator::sendCommand(){
     plan_pos();
     plan_dir();
     if(isConnect==true){
-    //qDebug()<< "vx: "<<vx <<" vy: "<<vy << " vr:"<<vr;
-    /*
-    ZSS::Protocol::Robots_Command commands;
-    auto command = commands.add_command();
-    command->set_robot_id(0);
-    command->set_velocity_x(vy);
-    command->set_velocity_y(vx);//坐标问题
-    command->set_velocity_r(vr);
-    int size = commands.ByteSize();
-    QByteArray buffer(size,0);
-    commands.SerializeToArray(buffer.data(), size);
-    */
-    QJsonObject rectJson;
-    rectJson.insert("id",0);
-    rectJson.insert("vx",vy);
-    rectJson.insert("vy",vx);
-    rectJson.insert("vr",vr);
-    QJsonDocument rectJsonDoc;
-    rectJsonDoc.setObject(rectJson);
-    QByteArray buffer = rectJsonDoc.toJson(QJsonDocument::Compact);
-
-    sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
-    //qDebug()<<buffer;
+        qDebug()<< "robotID:"<<robotID<<"vx: "<<vx <<" vy: "<<vy << " vr:"<<vr;
+        ZSS::Protocol::Robots_Command commands;
+        auto command = commands.add_command();
+        command->set_robot_id(robotID);
+        command->set_velocity_x(vy);
+        command->set_velocity_y(vx);//坐标问题
+        command->set_velocity_r(vr);
+        int size = commands.ByteSize();
+        QByteArray buffer(size,0);
+        commands.SerializeToArray(buffer.data(), size);
+        sendSocket.writeDatagram(buffer,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
+        //qDebug()<<buffer;
     }
 }
 
