@@ -55,42 +55,14 @@ void Communicator::testReceive(){
     while (receiveSocket.state() == QUdpSocket::BoundState && receiveSocket.hasPendingDatagrams()) {
         datagram.resize(receiveSocket.pendingDatagramSize());
         receiveSocket.readDatagram(datagram.data(), datagram.size());
-        qDebug() << "receive data : " << datagram;
+//        qDebug() << "receive data : " << datagram;
         sendCommand(datagram);
     }
 }
 
 void Communicator::sendCommand(QByteArray datagram){
-    QJsonParseError json_error;
-    QJsonDocument parse_doucment =QJsonDocument::fromJson(datagram,&json_error);
-    QJsonObject obj =parse_doucment.object();
-
-    /*
-    cJSON* pJson = cJSON_Parse(datagram);
-    cJSON* pSub1 = cJSON_GetObjectItem(pJson,"id");
-    cJSON* pSub2 = cJSON_GetObjectItem(pJson,"vx");
-    cJSON* pSub3 = cJSON_GetObjectItem(pJson,"vy");
-    cJSON* pSub4 = cJSON_GetObjectItem(pJson,"vr");
-    */
-    QJsonValue id_value =obj.take("id");
-    int id =id_value.toInt();
-
-    QJsonValue vx_value =obj.take("vx");
-    float vx =vx_value.toDouble();
-
-    QJsonValue vy_value =obj.take("vy");
-    float vy =vy_value.toDouble();
-
-    QJsonValue vr_value =obj.take("vr");
-    float vr =vr_value.toDouble();
-
     ZSS::Protocol::Robots_Command commands;
-    auto command = commands.add_command();
-    command->set_robot_id(id);
-    command->set_velocity_x(vx);
-    command->set_velocity_y(vy);
-    command->set_velocity_r(vr);
-    //commands.ParseFromArray(datagram, datagram.size());
-    qDebug() << "Send Command Now !!!！！！！！！";
+    commands.ParseFromArray(datagram, datagram.size());
+//    qDebug() << "Send Command Now !";
     ZSS::ZActionModule::instance()->sendLegacy(commands);
 }

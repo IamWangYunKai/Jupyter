@@ -75,6 +75,9 @@ void Communicator::sendCommand(){
         command->set_velocity_x(vy);
         command->set_velocity_y(vx);//坐标问题
         command->set_velocity_r(vr);
+        command->set_kick(false);//////
+        command->set_power(0);//////
+        command->set_dribbler_spin(0);//////
         int size = commands.ByteSize();
         QByteArray buffer(size,0);
         commands.SerializeToArray(buffer.data(), size);

@@ -97,6 +97,7 @@ bool ActionModuleSerialVersion::changeFrequency(int frequency){
 }
 void ActionModuleSerialVersion::sendLegacy(const ZSS::Protocol::Robots_Command& commands){
     int size = commands.command_size();
+
     int count = 0;
     for(int i=0;i<size;i++){
         if(count == 4){
@@ -107,9 +108,11 @@ void ActionModuleSerialVersion::sendLegacy(const ZSS::Protocol::Robots_Command& 
         auto& command = commands.command(i);
         encodeLegacy(command,this->tx,count++);
     }
+//    qDebug() << tx.toHex();
     serial.write(this->tx.data(),TRANSMIT_PACKET_SIZE);
     serial.flush();
-    //qDebug() << tx.toHex();
+//    sendSocket.writeDatagram(QByteArray::fromRawData((char*)this->tx.data(), 25),QHostAddress("10.12.225.78"),1030);
+//    qDebug() << tx.toHex();
 }
 bool ActionModuleSerialVersion::openSerialPort(){
     if (serial.open(QIODevice::ReadWrite)) {
@@ -163,6 +166,7 @@ void encodeLegacy(const ZSS::Protocol::Robot_Command& command,QByteArray& tx,int
     qint16 abs_vx = std::abs(vx);
     qint16 abs_vy = std::abs(vy);
     qint16 abs_vr = std::abs(vr);
+//    qDebug() << "vx: "<<vx <<" vy: " << vy <<endl;
     // flat&chip m/s -> cm/s
     // kick   1 : chip   0 : flat
     bool kick = command.kick();
@@ -178,6 +182,7 @@ void encodeLegacy(const ZSS::Protocol::Robot_Command& command,QByteArray& tx,int
     tx[num*4 + 4] = (vr>>8 & 0x80)|(abs_vr & 0x7f);
     tx[num  + 17] = (abs_vx>>1 & 0xc0)|(abs_vy>>3 & 0x30)|(abs_vr>>7 & 0x0f);
     tx[num  + 21] = power;
+//    qDebug() << "tx: "<<tx.toHex();
 }
 quint8 kickStandardization(quint8 id,bool mode,quint8 power){
     // TODO

@@ -2,6 +2,7 @@
 #define ZACTIONMODULE_H
 #include <QObject>
 #include <QSerialPort>
+#include <QUdpSocket>
 #include "singleton.hpp"
 #include "proto/zss_cmd.pb.h"
 namespace ZSS{
@@ -26,6 +27,7 @@ private:
 private:
     QSerialPort serial;
     QStringList ports;
+    QUdpSocket sendSocket;
     int frequency;
     QByteArray tx;
     QByteArray rx;

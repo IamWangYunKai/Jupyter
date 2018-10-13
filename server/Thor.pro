@@ -36,12 +36,12 @@ macx {
 
 win32 {
     SPDLOG_INCLUDE = $$PWD/libs
-    PROTOBUF_INCLUDE = C:\usr\local\protobuf\3.3.0\include
+    PROTOBUF_INCLUDE = C:\usr\local\protobuf\2.6.1\include
     CONFIG(release,debug|release){
-        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobuf.lib
+        PROTOBUF_LIB = C:\usr\local\protobuf\2.6.1\lib\vs14.0\libprotobuf.lib
     }
     CONFIG(debug,debug|release){
-        PROTOBUF_LIB = C:\usr\local\protobuf\3.3.0\lib\vs14.0\libprotobufd.lib
+        PROTOBUF_LIB = C:\usr\local\protobuf\2.6.1\lib\vs14.0\libprotobufd.lib
     }
 }
 unix:!macx{
