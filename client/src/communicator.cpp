@@ -1,5 +1,5 @@
 #include "communicator.h"
-#include "staticparam.h"
+#include "staticparam.hpp"
 #include <QNetworkInterface>
 #include <QtMath>
 #include <QTimer>

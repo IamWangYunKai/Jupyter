@@ -2,13 +2,10 @@
 #include <QQmlApplicationEngine>
 #include "zsingleton.h"
 #include "interaction.h"
-#include "translator.hpp"
 #include "paraminterface.h"
-#include "test.h"
+
 void qmlRegister(){
-    qmlRegisterType<Translator>("ZSS", 1, 0, "Translator");
     qmlRegisterType<Interaction>("ZSS", 1, 0, "Interaction");
-    qmlRegisterType<Test>("ZSS", 1, 0, "Test");
     qmlRegisterType<ParamInterface>("ZSS", 1, 0, "ParamModel");
 }
 

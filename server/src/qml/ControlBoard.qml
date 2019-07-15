@@ -8,9 +8,6 @@ Page{
     ZSS.Interaction{
         id:interaction;
     }
-    ZSS.Test{
-        id:test;
-    }
 
     header:TabBar {
         id: bar
@@ -144,7 +141,7 @@ Page{
             RowLayout {
                 id: textRowLayout
                 TextField {
-                    id: sendText
+                    id: sendTextcol
                     Layout.fillWidth: true
                     focus: true
                 }

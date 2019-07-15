@@ -6,7 +6,7 @@ Rectangle{
     x:0;
     y:0;
     radius: height/2;
-    color:"#888888";
+    color:"#3A3F44";
     //opacity:0.9;
     signal valueChanged(int x, int y)
     MultiPointTouchArea {
@@ -29,7 +29,7 @@ Rectangle{
             name: "reset"; when: touch.pressed
             PropertyChanges {
                 target: rocker;
-                color: "blue";
+                color: "#ee5f5b";
                 opacity:0.9;
                 //x:Math.min(Math.max(0,touch.x - width/2),parent.width - width);
                 //y:Math.min(Math.max(0,touch.y - height/2),parent.height - height);
@@ -45,7 +45,7 @@ Rectangle{
         radius: height/2;
         x:parent.width/2 - width/2;
         y:parent.height/2 - height/2;
-        color:"red";
+        color:"#5bc0de";
         opacity:0.6;
         property int _x:touch.x - parent.width/2;
         property int _y:touch.y - parent.height/2;

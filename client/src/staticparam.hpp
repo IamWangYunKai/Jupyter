@@ -1,5 +1,5 @@
-#ifndef STATICPARAM_H
-#define STATICPARAM_H
+#ifndef __STATICPARAM_HPP__
+#define __STATICPARAM_HPP__
 namespace ZSS{
 namespace Jupyter {
     const QString UDP_ADDRESS = "233.233.233.233";
@@ -13,4 +13,4 @@ namespace Vehicle{
     const float MAX_ROTATION_ACC = 10.0;//rad/s^2
 }
 }
-#endif // STATICPARAM_H
+#endif // __STATICPARAM_HPP__

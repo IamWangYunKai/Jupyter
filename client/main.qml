@@ -7,8 +7,8 @@ import ZSS 1.0 as ZSS
 Window {
     id:control
     visible: true
-    width: 500
-    height: 500
+    height: 450
+    width: 600
     title: qsTr("Jupyter")
     property bool socketConnect : false;
     ZSS.Interaction{
